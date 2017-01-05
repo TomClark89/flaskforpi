@@ -27,10 +27,14 @@ from flask import abort
 def get_task(task_id):
     task = [task for task in tasks if task['id'] == task_id]
     if len(task) == 0:
-        abort(400)
+        abort(404)
     return jsonify({'task': task[0]})
 
 
+from flask import make_response
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == '__main__':
